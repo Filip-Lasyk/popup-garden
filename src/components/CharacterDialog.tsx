@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Mail, ArrowRight } from "lucide-react";
+import { Mail, ArrowRight, AudioWaveform } from "lucide-react";
 
 interface CharacterDialogProps {
   isOpen: boolean;
@@ -23,13 +23,16 @@ const CharacterDialog = ({ isOpen, onOpenChange }: CharacterDialogProps) => {
               className="w-full h-48 object-cover rounded-lg mb-6"
             />
             <button
-              className="w-full bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 bg-background/80 hover:bg-background/70 text-foreground px-6 py-3 rounded-full font-medium transition-colors shadow-lg backdrop-blur-md group w-36"
               onClick={() => {
                 onOpenChange(false);
                 setStep('email'); // Reset for next time
               }}
             >
-              Start <ArrowRight className="w-4 h-4" />
+              <span className="w-8 h-8 bg-foreground rounded-full text-background flex items-center justify-center group-hover:bg-foreground/90 transition-colors">
+                <AudioWaveform className="w-4 h-4" />
+              </span>
+              <span className="mx-auto pe-2.5">Try a call</span>
             </button>
           </div>
         </DialogContent>
