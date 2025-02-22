@@ -1,8 +1,12 @@
 
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Mail } from "lucide-react";
+import { useState } from "react";
 
 const Index = () => {
+  const [showDialog, setShowDialog] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
@@ -51,6 +55,7 @@ const Index = () => {
             <Button
               className="w-full sm:w-auto bg-black hover:bg-black/90 text-white"
               size="lg"
+              onClick={() => setShowDialog(true)}
             >
               <Mail className="mr-2 h-4 w-4" />
               Apply Now
@@ -58,6 +63,39 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Application Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Apply for Senior Frontend Developer</DialogTitle>
+            <DialogDescription>
+              Submit your application for the Senior Frontend Developer position. We'll review your application and get back to you soon.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 border rounded-md"
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="resume" className="text-sm font-medium">Resume</label>
+              <input
+                id="resume"
+                type="file"
+                className="w-full px-3 py-2 border rounded-md"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+            <Button type="submit" className="w-full">Submit Application</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
