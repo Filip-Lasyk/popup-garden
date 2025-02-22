@@ -18,7 +18,7 @@ const CharacterDialog = ({ isOpen, onOpenChange }: CharacterDialogProps) => {
         <DialogContent>
           <div className="flex flex-col items-center">
             <img 
-              src="/lovable-uploads/3ade716e-6b2d-4069-ad4f-97a2ae07a3a7.png" 
+              src="https://images.unsplash.com/photo-1721322800607-8c38375eef04"
               alt="Start your journey"
               className="w-full h-48 object-cover rounded-lg mb-6"
             />
