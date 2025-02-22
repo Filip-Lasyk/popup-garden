@@ -8,9 +8,35 @@ interface CharacterCardProps {
   description: string;
   name: string;
   onClick?: () => void;
+  isEmailCard?: boolean;
 }
 
-const CharacterCard = ({ icon, title, description, name, onClick }: CharacterCardProps) => {
+const CharacterCard = ({ icon, title, description, name, onClick, isEmailCard }: CharacterCardProps) => {
+  if (isEmailCard) {
+    return (
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          {icon}
+          <span className="font-medium text-lg">{title}</span>
+        </div>
+        <p className="text-gray-600 mb-4 text-left">{description}</p>
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
+          />
+          <button
+            className="w-full bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors"
+            onClick={onClick}
+          >
+            Next step
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={onClick}

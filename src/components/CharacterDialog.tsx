@@ -1,7 +1,7 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CharacterCard from "./CharacterCard";
-import { GraduationCap, Gamepad, Map } from "lucide-react";
+import { GraduationCap, Gamepad, Map, Mail } from "lucide-react";
 
 interface CharacterDialogProps {
   isOpen: boolean;
@@ -14,10 +14,11 @@ const CharacterDialog = ({ isOpen, onOpenChange }: CharacterDialogProps) => {
       <DialogContent className="sm:max-w-[600px] p-8 gap-4 grid">
         <div className="grid gap-4">
           <CharacterCard
-            icon={<GraduationCap className="w-6 h-6" />}
-            title="Math tutor"
-            description="Speak with Matilda, a mathematics tutor who can help you with your studies."
-            name="Matilda"
+            icon={<Mail className="w-6 h-6" />}
+            title="Start your journey"
+            description="Enter your email to begin exploring our AI-powered characters and find the perfect companion for your needs."
+            name=""
+            isEmailCard={true}
           />
           <CharacterCard
             icon={<Gamepad className="w-6 h-6" />}
