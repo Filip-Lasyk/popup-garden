@@ -1,11 +1,63 @@
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Mail } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 const Index = () => {
   const [showDialog, setShowDialog] = useState(false);
+  const [step, setStep] = useState<'email' | 'start'>('email');
+  const [email, setEmail] = useState('');
+
+  const renderDialogContent = () => {
+    if (step === 'start') {
+      return (
+        <div className="flex flex-col items-center">
+          <img 
+            src="https://images.unsplash.com/photo-1721322800607-8c38375eef04"
+            alt="Start your journey"
+            className="w-full h-48 object-cover rounded-lg mb-6"
+          />
+          <button
+            className="w-full bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors flex items-center justify-center gap-2"
+            onClick={() => {
+              setShowDialog(false);
+              setStep('email'); // Reset for next time
+            }}
+          >
+            Start <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className="flex items-center gap-2">
+          <Mail className="w-6 h-6" />
+          <h2 className="text-2xl font-semibold">Start your journey</h2>
+        </div>
+        
+        <p className="text-gray-600 text-lg mt-6">
+          Enter your email to begin exploring our AI-powered characters and find the perfect companion for your needs.
+        </p>
+
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 mt-6"
+        />
+        <button
+          className="w-full bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-black/90 transition-colors mt-4"
+          onClick={() => setStep('start')}
+        >
+          Next step
+        </button>
+      </>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 to-teal-100">
@@ -66,34 +118,8 @@ const Index = () => {
 
       {/* Application Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Apply for Senior Frontend Developer</DialogTitle>
-            <DialogDescription>
-              Submit your application for the Senior Frontend Developer position. We'll review your application and get back to you soon.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-3 py-2 border rounded-md"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="resume" className="text-sm font-medium">Resume</label>
-              <input
-                id="resume"
-                type="file"
-                className="w-full px-3 py-2 border rounded-md"
-                accept=".pdf,.doc,.docx"
-              />
-            </div>
-            <Button type="submit" className="w-full">Submit Application</Button>
-          </div>
+        <DialogContent>
+          {renderDialogContent()}
         </DialogContent>
       </Dialog>
     </div>
