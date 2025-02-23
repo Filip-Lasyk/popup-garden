@@ -8,7 +8,7 @@ app.use(express.json());
 // MongoDB connection URL
 const uri = "mongodb+srv://kacperurbanowski05:0aji8Wm0w12CDrju@cluster0.b6yoi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const dbName = 'myDatabase';
-
+const db = await connectToMongo();
 // Connection function
 async function connectToMongo() {
     try {
@@ -50,7 +50,6 @@ Start by introducing yourself and asking the first question.`;
 // Campaign creation endpoint
 app.post('/campaigns', async (req, res) => {
     try {
-        const db = await connectToMongo();
 
         // Validate request body
         const { Title, Questions = [] } = req.body;
@@ -72,26 +71,6 @@ app.post('/campaigns', async (req, res) => {
         const campaignResult = await db.collection('campaigns').insertOne(campaign);
 
         try {
-            const interviewPrompt = createInterviewPrompt(Title, Questions);
-
-            // Create agent using ElevenLabs SDK
-            const agentResponse = await client.conversationalAi.createAgent({
-                name: `${Title} Interviewer`,
-                conversation_config: {
-                    agent:{prompt: {
-                            prompt: interviewPrompt
-                        }},
-                    initial_message: "Hello, I'll be conducting your interview today.",
-                    voice_id: "21m00Tcm4TlvDq8ikWAM",
-                    language: "en",
-                    audio_settings: {
-                        stability: 0.75,
-                        similarity_boost: 0.75
-                    }
-                }
-            });
-
-            const url = `https://elevenlabs.io/app/talk-to?agent_id=${agentResponse.agent_id}`;
 
             // Update campaign with agent details
             await db.collection('campaigns').updateOne(
@@ -134,6 +113,35 @@ app.post('/campaigns', async (req, res) => {
             details: error.message
         });
     }
+});
+
+app.get('/api/agent', async (req, res) => {
+    const campaignId = req.body.campaignId;
+    const {userEmail} = req.body;
+
+    console.log(campaignId)
+    const response = await db.collection("campaigns").findOne({_id: new ObjectId(campaignId)})
+    console.log(response);
+    const interviewPrompt = createInterviewPrompt(response.Title, response.Questions);
+    const agentResponse = await client.conversationalAi.createAgent({
+        name: `${response.title || "Title"} Interviewer ${userEmail}`,
+        conversation_config: {
+            agent:{prompt: {
+                    prompt: interviewPrompt
+                }},
+            initial_message: "Hello, I'll be conducting your interview today.",
+            voice_id: "21m00Tcm4TlvDq8ikWAM",
+            language: "en",
+            audio_settings: {
+                stability: 0.75,
+                similarity_boost: 0.75
+            }
+        }
+    });
+
+    const url = `https://elevenlabs.io/app/talk-to?agent_id=${agentResponse.agent_id}`;
+
+
 });
 
 // Get campaign questions endpoint
